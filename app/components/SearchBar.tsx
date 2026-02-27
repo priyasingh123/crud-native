@@ -52,10 +52,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   search_bar_container: {
-    marginTop: 10,
+    marginBottom: 15,
     flexDirection: "row",
-    marginHorizontal: 25,
-    width: "70%",
-    alignSelf: "center",
   },
 });

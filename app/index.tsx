@@ -42,10 +42,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   todo_list: {
     backgroundColor: "#000",
-    color: "white",
-    margin: 20,
-    width: "70%",
-    alignSelf: "center",
+    borderRadius: 12,
   },
   list_element: {
     padding: 15,
@@ -65,5 +62,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingHorizontal: 16,
+    paddingTop: 20,
   },
 });
