@@ -1,21 +1,36 @@
 import { data } from "@/data/todos";
+import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import SearchBar from "./components/SearchBar";
 
 export default function Index() {
+  const [listData, setListData] = useState(data);
   const separatorComp = <View style={styles.separator} />;
+
+  const handleDelete = (id: number) => {
+    const list = [...listData];
+    const updatedList = list.filter((item) => item.id !== id);
+    setListData(updatedList);
+  };
   return (
     <View style={styles.container}>
-      <SearchBar />
+      <SearchBar setListData={setListData} />
       <FlatList
         contentContainerStyle={styles.todo_list}
-        data={data}
+        data={listData}
         ItemSeparatorComponent={() => separatorComp}
         renderItem={({ item }) => {
           return (
             <View style={styles.list_element}>
-              <Text style={styles.list_text}>{item.title}</Text>
-              <Pressable></Pressable>
+              <Text
+                style={[styles.list_text, item.completed && styles.text_cut]}
+              >
+                {item.title}
+              </Text>
+              <Pressable onPress={() => handleDelete(item.id)}>
+                <Ionicons name="trash-outline" color="red" size={22} />
+              </Pressable>
             </View>
           );
         }}
@@ -28,15 +43,21 @@ const styles = StyleSheet.create({
   todo_list: {
     backgroundColor: "#000",
     color: "white",
-    margin: 25,
+    margin: 20,
     width: "70%",
     alignSelf: "center",
   },
   list_element: {
     padding: 15,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   list_text: {
     color: "white",
+  },
+  text_cut: {
+    textDecorationLine: "line-through",
+    color: "grey",
   },
   separator: {
     borderBottomColor: "white",
