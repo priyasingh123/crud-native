@@ -1,11 +1,21 @@
 import { data } from "@/data/todos";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import SearchBar from "./components/SearchBar";
 
 export default function Index() {
   const [listData, setListData] = useState(data);
+  const Container = Platform.OS === "web" ? ScrollView : SafeAreaView;
   const separatorComp = <View style={styles.separator} />;
 
   const handleDelete = (id: number) => {
@@ -14,7 +24,7 @@ export default function Index() {
     setListData(updatedList);
   };
   return (
-    <View style={styles.container}>
+    <Container style={styles.container}>
       <SearchBar setListData={setListData} />
       <FlatList
         contentContainerStyle={styles.todo_list}
@@ -35,7 +45,7 @@ export default function Index() {
           );
         }}
       ></FlatList>
-    </View>
+    </Container>
   );
 }
 
@@ -51,6 +61,7 @@ const styles = StyleSheet.create({
   },
   list_text: {
     color: "white",
+    fontSize: 15,
   },
   text_cut: {
     textDecorationLine: "line-through",
@@ -64,5 +75,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 20,
+    backgroundColor: "#121010",
   },
 });

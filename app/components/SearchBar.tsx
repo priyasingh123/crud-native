@@ -44,12 +44,14 @@ const styles = StyleSheet.create({
   },
   search_input: {
     flex: 1,
-    borderColor: "black",
+    borderColor: "grey",
     borderRadius: 10,
     borderWidth: 1,
     paddingHorizontal: 10,
     paddingVertical: 5,
     marginRight: 5,
+    color: "grey",
+    fontSize: 15,
   },
   search_bar_container: {
     marginBottom: 15,
