@@ -23,10 +23,22 @@ export default function Index() {
     const updatedList = list.filter((item) => item.id !== id);
     setListData(updatedList);
   };
+
+  const toggleListItem = (id: number) => {
+    const list = [...listData];
+    const updatedList = list.map((item) => {
+      if (item.id === id) {
+        return { ...item, completed: !item.completed };
+      }
+      return item;
+    });
+    setListData(updatedList);
+  };
   return (
     <Container style={styles.container}>
       <SearchBar setListData={setListData} />
       <FlatList
+        keyExtractor={(list) => list.id.toString()}
         contentContainerStyle={styles.todo_list}
         data={listData}
         ItemSeparatorComponent={() => separatorComp}
@@ -35,6 +47,7 @@ export default function Index() {
             <View style={styles.list_element}>
               <Text
                 style={[styles.list_text, item.completed && styles.text_cut]}
+                onPress={() => toggleListItem(item.id)}
               >
                 {item.title}
               </Text>
