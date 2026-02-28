@@ -40,8 +40,12 @@ const SearchBar = ({
         placeholder="Add a new Todo"
         onChangeText={setTodoVal}
       />
-      <Pressable style={styles.submit_btn} onPress={handleAdd}>
-        <Text>Add</Text>
+      <Pressable
+        style={[styles.submit_btn, !todoVal ? styles.disabled_btn : ""]}
+        onPress={handleAdd}
+        disabled={!todoVal ? true : false}
+      >
+        <Text style={styles.submit_text}>Add</Text>
       </Pressable>
       <Pressable
         onPress={() =>
@@ -63,26 +67,31 @@ export default SearchBar;
 
 function createStyle(theme: ThemeType) {
   return StyleSheet.create({
+    disabled_btn: {
+      backgroundColor: "gray",
+    },
     submit_btn: {
-      borderColor: "black",
+      borderColor: theme.background,
       borderWidth: 1,
-      color: "black",
-      backgroundColor: "white",
+      backgroundColor: theme.button,
       marginLeft: 8,
       paddingHorizontal: 16,
       paddingVertical: 8,
       marginHorizontal: 5,
       borderRadius: 10,
     },
+    submit_text: {
+      color: theme.btn_text,
+    },
     search_input: {
       flex: 1,
-      borderColor: "grey",
+      borderColor: theme.text_version,
       borderRadius: 10,
       borderWidth: 1,
       paddingHorizontal: 10,
       paddingVertical: 5,
       marginRight: 5,
-      color: "grey",
+      color: theme.text_version,
       fontSize: 15,
     },
     search_bar_container: {
