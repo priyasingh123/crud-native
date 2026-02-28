@@ -63,6 +63,17 @@ export default function Index() {
     fetchData();
   }, [data]);
 
+  useEffect(() => {
+    const storeData = async () => {
+      try {
+        await AsyncStorage.setItem("TodoApp", JSON.stringify(listData));
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    storeData();
+  }, [listData]);
+
   if (!loaded && !error) return null;
   return (
     <Container style={styles.container}>
