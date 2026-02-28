@@ -15,6 +15,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import SearchBar from "./components/SearchBar";
 import { ThemeType } from "@/constants/Colors";
+import Animated, { LinearTransition } from "react-native-reanimated";
 
 export default function Index() {
   const context = useContext<ThemeContextType | undefined>(ThemeContext);
@@ -54,11 +55,13 @@ export default function Index() {
         theme={theme}
         colorScheme={colorScheme}
       />
-      <FlatList
+      <Animated.FlatList
         keyExtractor={(list) => list.id.toString()}
         contentContainerStyle={styles.todo_list}
         data={listData}
         ItemSeparatorComponent={() => separatorComp}
+        itemLayoutAnimation={LinearTransition}
+        keyboardDismissMode="on-drag" // keyboard will collapse when user drag to see rest of the list
         renderItem={({ item }) => {
           return (
             <View style={styles.list_element}>
@@ -74,7 +77,7 @@ export default function Index() {
             </View>
           );
         }}
-      ></FlatList>
+      ></Animated.FlatList>
     </Container>
   );
 }
