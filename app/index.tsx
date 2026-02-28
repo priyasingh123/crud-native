@@ -1,10 +1,9 @@
-import { data } from "@/data/todos";
+import { data, Todo } from "@/data/todos";
 import { Inter_500Medium, useFonts } from "@expo-google-fonts/inter";
 import { Ionicons } from "@expo/vector-icons";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { ThemeContext, ThemeContextType } from "@/context/ThemeContext";
 import {
-  FlatList,
   Platform,
   Pressable,
   ScrollView,
@@ -16,6 +15,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import SearchBar from "./components/SearchBar";
 import { ThemeType } from "@/constants/Colors";
 import Animated, { LinearTransition } from "react-native-reanimated";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Index() {
   const context = useContext<ThemeContextType | undefined>(ThemeContext);
@@ -24,7 +24,7 @@ export default function Index() {
   }
   const { colorScheme, theme, setColorScheme } = context;
   const styles = createStyles(theme);
-  const [listData, setListData] = useState(data.sort((a, b) => b.id - a.id));
+  const [listData, setListData] = useState<Todo[]>([]);
   const Container = Platform.OS === "web" ? ScrollView : SafeAreaView;
   const separatorComp = <View style={styles.separator} />;
   const [loaded, error] = useFonts({ Inter_500Medium });
@@ -45,6 +45,23 @@ export default function Index() {
     });
     setListData(updatedList);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem("TodoApp");
+        const storageTodos = jsonValue !== null ? JSON.parse(jsonValue) : null;
+        if (storageTodos && storageTodos.length) {
+          setListData(storageTodos.sort((a: Todo, b: Todo) => b.id - a.id));
+        } else {
+          setListData(data.sort((a, b) => b.id - a.id));
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchData();
+  }, [data]);
 
   if (!loaded && !error) return null;
   return (
