@@ -16,6 +16,7 @@ import SearchBar from "./components/SearchBar";
 import { ThemeType } from "@/constants/Colors";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StatusBar } from "expo-status-bar";
 
 export default function Index() {
   const context = useContext<ThemeContextType | undefined>(ThemeContext);
@@ -105,7 +106,8 @@ export default function Index() {
             </View>
           );
         }}
-      ></Animated.FlatList>
+      />
+      <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
     </Container>
   );
 }
