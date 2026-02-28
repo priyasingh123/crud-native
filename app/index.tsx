@@ -1,6 +1,8 @@
 import { data } from "@/data/todos";
-import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import { Inter_500Medium, useFonts } from "@expo-google-fonts/inter";
+import { Ionicons, Octicons } from "@expo/vector-icons";
+import { useState, useContext } from "react";
+import { ThemeContext, ThemeContextType } from "@/context/ThemeContext";
 import {
   FlatList,
   Platform,
@@ -14,10 +16,17 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import SearchBar from "./components/SearchBar";
 
 export default function Index() {
-  const [listData, setListData] = useState(data);
+  const [listData, setListData] = useState(data.sort((a, b) => b.id - a.id));
   const Container = Platform.OS === "web" ? ScrollView : SafeAreaView;
   const separatorComp = <View style={styles.separator} />;
+  const [loaded, error] = useFonts({ Inter_500Medium });
+  const context = useContext<ThemeContextType | undefined>(ThemeContext);
 
+  if (!context) {
+    throw new Error("ThemeContext must be used within ThemeProvider");
+  }
+
+  const { colorScheme, theme, setColorScheme } = context;
   const handleDelete = (id: number) => {
     const list = [...listData];
     const updatedList = list.filter((item) => item.id !== id);
@@ -34,9 +43,16 @@ export default function Index() {
     });
     setListData(updatedList);
   };
+
+  if (!loaded && !error) return null;
   return (
     <Container style={styles.container}>
-      <SearchBar setListData={setListData} />
+      <SearchBar
+        setListData={setListData}
+        setColorScheme={setColorScheme}
+        theme={theme}
+        colorScheme={colorScheme}
+      />
       <FlatList
         keyExtractor={(list) => list.id.toString()}
         contentContainerStyle={styles.todo_list}
@@ -75,6 +91,7 @@ const styles = StyleSheet.create({
   list_text: {
     color: "white",
     fontSize: 15,
+    fontFamily: "Inter_500Medium",
   },
   text_cut: {
     textDecorationLine: "line-through",
