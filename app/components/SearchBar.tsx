@@ -51,7 +51,7 @@ const SearchBar = ({
         onPress={() =>
           setColorScheme((prev) => (prev === "dark" ? "light" : "dark"))
         }
-        style={{ marginLeft: 10 }}
+        style={{ marginLeft: 10, marginTop: 5 }}
       >
         <Octicons
           name={colorScheme === "dark" ? "moon" : "sun"}
