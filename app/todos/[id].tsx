@@ -72,6 +72,7 @@ export default function EditScreen() {
           style={styles.input}
           placeholder="Edit todo"
           placeholderTextColor="gray"
+          maxLength={30}
           value={todo?.title || ""}
           onChangeText={(text) =>
             setTodo((prev) => (prev ? { ...prev, title: text } : prev))

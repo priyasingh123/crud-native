@@ -37,6 +37,7 @@ const SearchBar = ({
       <TextInput
         style={styles.search_input}
         value={todoVal}
+        maxLength={30}
         placeholder="Add a new Todo"
         onChangeText={setTodoVal}
       />
