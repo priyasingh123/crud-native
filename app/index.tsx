@@ -17,6 +17,7 @@ import { ThemeType } from "@/constants/Colors";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
+import { useRouter } from "expo-router";
 
 export default function Index() {
   const context = useContext<ThemeContextType | undefined>(ThemeContext);
@@ -29,11 +30,19 @@ export default function Index() {
   const Container = Platform.OS === "web" ? ScrollView : SafeAreaView;
   const separatorComp = <View style={styles.separator} />;
   const [loaded, error] = useFonts({ Inter_500Medium });
+  const router = useRouter();
 
   const handleDelete = (id: number) => {
     const list = [...listData];
     const updatedList = list.filter((item) => item.id !== id);
     setListData(updatedList);
+  };
+
+  const handlePress = (id: number) => {
+    router.push({
+      pathname: `/todos/[id]`,
+      params: { id },
+    });
   };
 
   const toggleListItem = (id: number) => {
@@ -94,12 +103,16 @@ export default function Index() {
         renderItem={({ item }) => {
           return (
             <View style={styles.list_element}>
-              <Text
-                style={[styles.list_text, item.completed && styles.text_cut]}
-                onPress={() => toggleListItem(item.id)}
+              <Pressable
+                onLongPress={() => toggleListItem(item.id)}
+                onPress={() => handlePress(item.id)}
               >
-                {item.title}
-              </Text>
+                <Text
+                  style={[styles.list_text, item.completed && styles.text_cut]}
+                >
+                  {item.title}
+                </Text>
+              </Pressable>
               <Pressable onPress={() => handleDelete(item.id)}>
                 <Ionicons name="trash-outline" color="red" size={22} />
               </Pressable>
